@@ -1,0 +1,36 @@
+body {
+    background-color: rgb(57, 58, 55);
+}
+
+h2 {
+    color: rgb(225, 231, 217);
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.player-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.player-grid .player-box {
+    border: 1px solid #222;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.player-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    /* 16:9 aspect ratio */
+    padding-bottom: 56.25%;
+}
+
+.player-container .player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+}

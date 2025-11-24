@@ -1,0 +1,23 @@
+# node / build
+node_modules/
+dist/
+build/
+
+# backend generated HLS + inputs and logs
+/video-backend/hls/
+/video-backend/inputs/
+/video-backend/*.log
+
+# node-server env & lock (if desired)
+video-backend/node-server/.env
+video-backend/node-server/node_modules/
+
+# frontend
+video-frontend/node_modules/
+video-frontend/dist/
+
+# OS / editor
+.DS_Store
+*.log
+.vscode/
+.env

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./hls:/usr/share/nginx/html/hls:ro  # host bind for nginx (read-only)
+    ports:
+      - '8080:80'  # change if needed
+    networks:
+      - backend
+
+  ffmpeg:
+    image: jrottenberg/ffmpeg:4.4-alpine
+    restart: unless-stopped
+    network_mode: "service:nginx"
+    volumes:
+      - ./hls:/var/www/hls  # host bind for ffmpeg
+      - ./inputs:/inputs:ro
+    command: >
+      -hide_banner -loglevel info
+      -re -i /inputs/BigBuckBunny.mp4
+      -c:v copy -c:a copy -f hls -hls_time 2 -hls_list_size 6 -hls_flags delete_segments /var/www/hls/stream1/index.m3u8
+      -c:v copy -c:a copy -f hls -hls_time 2 -hls_list_size 6 -hls_flags delete_segments /var/www/hls/stream2/index.m3u8
+      -c:v copy -c:a copy -f hls -hls_time 2 -hls_list_size 6 -hls_flags delete_segments /var/www/hls/stream3/index.m3u8
+      -c:v copy -c:a copy -f hls -hls_time 2 -hls_list_size 6 -hls_flags delete_segments /var/www/hls/stream4/index.m3u8
+      -c:v copy -c:a copy -f hls -hls_time 2 -hls_list_size 6 -hls_flags delete_segments /var/www/hls/stream5/index.m3u8
+      -c:v copy -c:a copy -f hls -hls_time 2 -hls_list_size 6 -hls_flags delete_segments /var/www/hls/stream6/index.m3u8
+
+  node-server:
+    build: ./node-server
+    environment:
+      - PORT=3000
+      - HLS_BASE_URL=http://localhost:8080/hls
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./node-server:/usr/src/app
+    depends_on:
+      - nginx
+    networks:
+      - backend
+
+volumes:
+  hls-data:
+
+networks:
+  backend:
+    driver: bridge
