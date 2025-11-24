@@ -4,8 +4,6 @@ dist/
 build/
 
 # backend generated HLS + inputs and logs
-/video-backend/hls/
-/video-backend/inputs/
 /video-backend/*.log
 
 # node-server env & lock (if desired)
