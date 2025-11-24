@@ -16,7 +16,7 @@ export default function PlayerGrid() {
         setStreams(data.streams || []);
         serverTimeRef.current = data.serverTime;
       })
-      .catch(console.error);
+      .catch((err) => alert("Please start the docker container to run backend server to load videos.  Instructions I have included in Readme.md file."));
   }, []);
 
   useEffect(() => {
